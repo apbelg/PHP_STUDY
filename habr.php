@@ -66,7 +66,7 @@ $text_1 = '<div class="post__tags">';
 $c = our_find($text_1,$homepage,'</div>');
 $c = str_replace("\n", NULL, $c);
 echo($c.'</br></br>');
-$array['tags'] = explode(", ",$c);
+$array['tags'] = explode(",",$c);
 
 echo(json_encode($array,JSON_UNESCAPED_UNICODE));
 
