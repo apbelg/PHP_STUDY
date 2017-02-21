@@ -8,6 +8,8 @@ function our_find ($date_pub,$homepage,$end_str)
   $b = mb_strpos($homepage1,$end_str);
   $c = mb_substr($homepage1,0,$b+1);
   $c = trim(strip_tags($c));
+//  $c = str_replace("\n", NULL, $c);
+//  $c = str_replace("\r", NULL, $c);
   return $c;
 }
 
@@ -18,6 +20,7 @@ $nom_arcticle = rand(1,172223);
 $article = 'https://habrahabr.ru/post/'.$nom_arcticle."/";
 
 $homepage = file_get_contents($article);
+echo($article.'</br>');
 if ($homepage === false)
  {
   echo '<h2>'.'Доступ к публикации закрыт или другая причина ошибки !!!'.'</h2>';
@@ -33,11 +36,12 @@ echo($c.'</br>');
 $array['title'] = $c;
 
 $text_1 = '<div class="content html_format">';
-$c = our_find($text_1,$homepage,".");
+$c = our_find($text_1,$homepage,"</div>");
+$a = mb_strpos($c,".");
+$c = mb_substr($c,0,$a+1);
 echo($c.'</br>');
 $array['text'] = $c;
 
-echo($article.'</br>');
 $date_pub = '<span class="post__time_published">';
 $c = our_find($date_pub,$homepage,"</span>");
 echo($c.'</br>');
@@ -61,8 +65,8 @@ $array['views'] = $c;
 $text_1 = '<div class="post__tags">';
 $c = our_find($text_1,$homepage,'</div>');
 $c = str_replace("\n", NULL, $c);
-echo($c.'</br>');
-$array['tags'] = $c;
+echo($c.'</br></br>');
+$array['tags'] = explode(", ",$c);
 
 echo(json_encode($array,JSON_UNESCAPED_UNICODE));
 
